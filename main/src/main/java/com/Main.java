@@ -52,7 +52,7 @@ public class Main extends PApplet {
         staffs.get(0).getMeasures().add(new Measure());
         staffs.get(0).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH_TRIPLET, null));
         staffs.get(0).getMeasures().get(0).notes.add(new Note(1, NoteLength.EIGHTH_TRIPLET, null));
-        staffs.get(0).getMeasures().get(0).notes.add(new Note(2, NoteLength.EIGHTH_TRIPLET, null));
+        staffs.get(0).getMeasures().get(0).notes.add(new Note(8, NoteLength.EIGHTH_TRIPLET, null));
         staffs.get(0).getMeasures().get(0).notes.add(new Note(1.5f, NoteLength.QUARTER, null));
         staffs.get(0).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
         staffs.get(0).getMeasures().add(new Measure());
@@ -66,7 +66,7 @@ public class Main extends PApplet {
         staffs.add(new Part(0, null));
         staffs.get(1).getMeasures().add(new Measure());
         staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH, null));
-        staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH, null));
+        staffs.get(1).getMeasures().get(0).notes.add(new Note(8, NoteLength.EIGHTH, null));
         staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH, null));
         staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
         staffs.get(1).getMeasures().add(new Measure());

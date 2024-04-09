@@ -6,7 +6,7 @@ public class VisualSettings {
 
     // DRAWING SIZE SETTINGS
     public float staffHeight = 150f;
-    public float staffAreaPaddingTop = 20f;
+    public float staffAreaPaddingTop = 200f;
     public float unfinishedMeasurePadding = 40f;
     public float measurePadding = 20f;
 

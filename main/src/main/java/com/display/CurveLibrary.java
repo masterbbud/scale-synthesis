@@ -17,6 +17,8 @@ public class CurveLibrary {
     public static Curve ICON_REPEAT_END;
 
     public static Curve NOTES_WHOLE;
+
+    public static Curve TEXT_3;
     
     public static void init() {
         ICON_WHOLE = new Curve("icons/whole");
@@ -33,6 +35,8 @@ public class CurveLibrary {
         ICON_REPEAT_END = new Curve("icons/repeat");
 
         NOTES_WHOLE = new Curve("notes/whole");
+
+        TEXT_3 = new Curve("text/3");
     }
 
     public static Curve getNoteByLength(NoteLength length) {
