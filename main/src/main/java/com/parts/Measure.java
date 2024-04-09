@@ -5,22 +5,29 @@ import java.util.ArrayList;
 import com.display.VisualSettings;
 
 public class Measure {
-    public ArrayList<Beat> beats;
+    public ArrayList<Note> notes;
+    public int transposition;
+    public int transpositionOctave;
+    public int beats = 4;
 
     public Measure() {
-        beats = new ArrayList<Beat>();
-        beats.add(new Beat());
-        beats.add(new Beat());
-        beats.add(new Beat());
-        beats.add(new Beat());
+        notes = new ArrayList<Note>();
     }
 
     public float getVisualWidth() {
         float total = 0;
-        for (Beat b : beats) {
-            total += b.getVisualWidth();
+        for (Note n : notes) {
+            total += n.getVisualWidth();
         }
         total += VisualSettings.instance().measurePadding;
         return total;
+    }
+
+    public boolean isComplete() {
+        float sum = 0;
+        for (Note n : notes) {
+            sum += n.getCanonLength();
+        }
+        return sum >= beats;
     }
 }

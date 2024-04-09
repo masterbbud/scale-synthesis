@@ -56,6 +56,9 @@ public class Element {
         color.setFill(launcher);
     }
 
+    protected void click(float xPos, float yPos) {
+        click();
+    }
     protected void click() {}
     protected void startHover() {}
     protected void endHover() {}
@@ -67,7 +70,7 @@ public class Element {
      */
     public boolean tryClick() {
         if (launcher.mousePressed && ! launcher.isMousePressed() && mouseInBounds()) {
-            click();
+            click(launcher.mouseX - x, launcher.mouseY - y);
             return true;
         }
         return false;

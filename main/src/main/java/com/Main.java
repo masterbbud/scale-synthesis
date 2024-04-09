@@ -9,9 +9,12 @@ import com.customElements.NoteDecorationButton;
 import com.customElements.NoteLengthButton;
 import com.display.Curve;
 import com.display.CurveLibrary;
-import com.display.Staff;
 import com.display.StaffVisualizer;
 import com.enums.NoteDecoration;
+import com.enums.NoteLength;
+import com.parts.Measure;
+import com.parts.Note;
+import com.parts.Part;
 import com.playback.Instrument;
 
 import processing.core.PApplet;
@@ -26,7 +29,7 @@ public class Main extends PApplet {
     protected ArrayList<Element> elements;
     protected boolean isMousePressed = false;
 
-    private ArrayList<Staff> staffs;
+    private ArrayList<Part> staffs;
 
     private StaffVisualizer staffVisualizer;
     
@@ -45,8 +48,32 @@ public class Main extends PApplet {
         ellipseMode(CENTER);
 
         staffs = new ArrayList<>();
-        staffs.add(new Staff());
-        staffVisualizer = new StaffVisualizer(this, 100, 100, 400, 400, staffs);
+        staffs.add(new Part(0, null));
+        staffs.get(0).getMeasures().add(new Measure());
+        staffs.get(0).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH_TRIPLET, null));
+        staffs.get(0).getMeasures().get(0).notes.add(new Note(1, NoteLength.EIGHTH_TRIPLET, null));
+        staffs.get(0).getMeasures().get(0).notes.add(new Note(2, NoteLength.EIGHTH_TRIPLET, null));
+        staffs.get(0).getMeasures().get(0).notes.add(new Note(1.5f, NoteLength.QUARTER, null));
+        staffs.get(0).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
+        staffs.get(0).getMeasures().add(new Measure());
+        staffs.get(0).getMeasures().get(1).notes.add(new Note(0, NoteLength.QUARTER, null));
+        staffs.get(0).getMeasures().get(1).notes.add(new Note(3, NoteLength.QUARTER, null));
+        staffs.get(0).getMeasures().get(1).notes.add(new Note(0, NoteLength.QUARTER, null));
+        staffs.get(0).getMeasures().get(1).transposition = 3;
+        staffs.get(0).getMeasures().add(new Measure());
+        staffs.get(0).getMeasures().add(new Measure());
+
+        staffs.add(new Part(0, null));
+        staffs.get(1).getMeasures().add(new Measure());
+        staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH, null));
+        staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH, null));
+        staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH, null));
+        staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
+        staffs.get(1).getMeasures().add(new Measure());
+        staffs.get(1).getMeasures().get(1).transposition = 3;
+        staffs.get(1).getMeasures().add(new Measure());
+        staffs.get(1).getMeasures().add(new Measure());
+        staffVisualizer = new StaffVisualizer(this, 100, 100, 400, 800, staffs);
         elements.add(staffVisualizer);
         initUI();
         

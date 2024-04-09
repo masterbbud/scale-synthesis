@@ -3,6 +3,7 @@ package com.display;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 public class CurvePart {
@@ -46,5 +47,15 @@ public class CurvePart {
         }
 
         main.endShape();
+    }
+
+    public void draw(PGraphics g, float x, float y, float scale) {
+        g.beginShape();
+        g.vertex(x + firstVertex.x * scale, y + firstVertex.y * scale);
+        for (PVector[] vertex : vertices) {
+            g.bezierVertex(x + vertex[0].x * scale, y + vertex[0].y * scale, x + vertex[1].x * scale, y + vertex[1].y * scale, x + vertex[2].x * scale, y + vertex[2].y * scale);
+        }
+
+        g.endShape();
     }
 }

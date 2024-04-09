@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import com.Main;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 public class Curve {
 
@@ -49,6 +50,12 @@ public class Curve {
     public void draw(PApplet main, float x, float y, float w) {
         for (CurvePart part : parts) {
             part.draw(main, x, y, w / (maxW * 2));
+        }
+    }
+
+    public void draw(PGraphics g, float x, float y, float w) {
+        for (CurvePart part : parts) {
+            part.draw(g, x, y, w / (maxW * 2));
         }
     }
 

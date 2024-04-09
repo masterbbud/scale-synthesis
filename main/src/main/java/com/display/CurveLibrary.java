@@ -1,5 +1,7 @@
 package com.display;
 
+import com.enums.NoteLength;
+
 public class CurveLibrary {
 
     public static Curve ICON_WHOLE;
@@ -13,6 +15,8 @@ public class CurveLibrary {
     public static Curve ICON_TIE;
     public static Curve ICON_REPEAT_START;
     public static Curve ICON_REPEAT_END;
+
+    public static Curve NOTES_WHOLE;
     
     public static void init() {
         ICON_WHOLE = new Curve("icons/whole");
@@ -27,5 +31,28 @@ public class CurveLibrary {
         ICON_TIE = new Curve("icons/tie");
         ICON_REPEAT_START = new Curve("icons/repeat-start");
         ICON_REPEAT_END = new Curve("icons/repeat");
+
+        NOTES_WHOLE = new Curve("notes/whole");
+    }
+
+    public static Curve getNoteByLength(NoteLength length) {
+        switch (length) {
+            case SIXTEENTH:
+                return NOTES_WHOLE;
+            case EIGHTH_TRIPLET:
+                return NOTES_WHOLE;
+            case EIGHTH:
+                return NOTES_WHOLE;
+            case QUARTER_TRIPLET:
+                return NOTES_WHOLE;
+            case QUARTER:
+                return NOTES_WHOLE;
+            case HALF:
+                return NOTES_WHOLE;
+            case WHOLE:
+                return NOTES_WHOLE;
+            default:
+                return NOTES_WHOLE;
+        }
     }
 }
