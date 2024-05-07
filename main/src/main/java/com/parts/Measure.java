@@ -30,4 +30,12 @@ public class Measure {
         }
         return sum >= beats;
     }
+
+    public float totalLength() {
+        float tot = 0;
+        for (Note n : notes) {
+            tot += n.getCanonLength();
+        }
+        return tot;
+    }
 }

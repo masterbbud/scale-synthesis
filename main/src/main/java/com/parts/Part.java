@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import com.Waveform;
 import com.playback.Instrument;
+import com.playback.NoteShell;
 
 public class Part {
     
     private ArrayList<Measure> measures = new ArrayList<Measure>();
-    private Instrument instrument;
+    public Instrument instrument;
     public int key;
+    public ArrayList<NoteShell> noteShells = new ArrayList<>();
     
     public Part(int key, Instrument instrument) {
         this.key = key;

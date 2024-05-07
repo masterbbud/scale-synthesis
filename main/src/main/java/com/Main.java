@@ -12,10 +12,12 @@ import com.display.CurveLibrary;
 import com.display.StaffVisualizer;
 import com.enums.NoteDecoration;
 import com.enums.NoteLength;
+import com.parts.Composer;
 import com.parts.Measure;
 import com.parts.Note;
 import com.parts.Part;
 import com.playback.Instrument;
+import com.playback.Player;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -46,40 +48,50 @@ public class Main extends PApplet {
     public void setup() {
         frameRate(FRAME_RATE);
         ellipseMode(CENTER);
+        
+        Instrument instrument = new Instrument(new float[]{0.064f, 0.0213f, 0.0285f, 0.014f, 0.013f, 0.0025f, 0.003f, 0.0023f, 0.002f, 0.0018f, 0.0015f, 0.001f, 0.0005f});
 
         staffs = new ArrayList<>();
-        staffs.add(new Part(0, null));
-        staffs.get(0).getMeasures().add(new Measure());
-        staffs.get(0).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH_TRIPLET, null));
-        staffs.get(0).getMeasures().get(0).notes.add(new Note(1, NoteLength.EIGHTH_TRIPLET, null));
-        staffs.get(0).getMeasures().get(0).notes.add(new Note(8, NoteLength.EIGHTH_TRIPLET, null));
-        staffs.get(0).getMeasures().get(0).notes.add(new Note(1.5f, NoteLength.QUARTER, null));
-        staffs.get(0).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
-        staffs.get(0).getMeasures().add(new Measure());
-        staffs.get(0).getMeasures().get(1).notes.add(new Note(0, NoteLength.QUARTER, null));
-        staffs.get(0).getMeasures().get(1).notes.add(new Note(3, NoteLength.QUARTER, null));
-        staffs.get(0).getMeasures().get(1).notes.add(new Note(0, NoteLength.QUARTER, null));
-        staffs.get(0).getMeasures().get(1).transposition = 3;
-        staffs.get(0).getMeasures().add(new Measure());
-        staffs.get(0).getMeasures().add(new Measure());
 
-        staffs.add(new Part(0, null));
-        staffs.get(1).getMeasures().add(new Measure());
-        staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH, null));
-        staffs.get(1).getMeasures().get(0).notes.add(new Note(8, NoteLength.EIGHTH, null));
-        staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH, null));
-        staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
-        staffs.get(1).getMeasures().add(new Measure());
-        staffs.get(1).getMeasures().get(1).transposition = 3;
-        staffs.get(1).getMeasures().add(new Measure());
-        staffs.get(1).getMeasures().add(new Measure());
-        staffVisualizer = new StaffVisualizer(this, 100, 100, 400, 800, staffs);
+        Composer composer = new Composer();
+        staffs = composer.compose();
+
+        // staffs.add(new Part(0, instrument));
+        // staffs.get(0).getMeasures().add(new Measure());
+        // staffs.get(0).getMeasures().get(0).notes.add(new Note(0, NoteLength.EIGHTH_TRIPLET, null));
+        // staffs.get(0).getMeasures().get(0).notes.add(new Note(1, NoteLength.EIGHTH_TRIPLET, null));
+        // staffs.get(0).getMeasures().get(0).notes.add(new Note(8, NoteLength.EIGHTH_TRIPLET, null));
+        // staffs.get(0).getMeasures().get(0).notes.add(new Note(1.5f, NoteLength.QUARTER, null));
+        // staffs.get(0).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
+        // staffs.get(0).getMeasures().add(new Measure());
+        // staffs.get(0).getMeasures().get(1).notes.add(new Note(0, NoteLength.QUARTER, null));
+        // staffs.get(0).getMeasures().get(1).notes.add(new Note(3, NoteLength.QUARTER, null));
+        // staffs.get(0).getMeasures().get(1).notes.add(new Note(0, NoteLength.QUARTER, null));
+        // staffs.get(0).getMeasures().get(1).transposition = 3;
+        // staffs.get(0).getMeasures().add(new Measure());
+        // staffs.get(0).getMeasures().add(new Measure());
+
+        // staffs.add(new Part(0, instrument));
+        // staffs.get(1).getMeasures().add(new Measure());
+        // staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
+        // staffs.get(1).getMeasures().get(0).notes.add(new Note(8, NoteLength.QUARTER, null));
+        // staffs.get(1).getMeasures().get(0).notes.add(new Note(0, NoteLength.QUARTER, null));
+        // staffs.get(1).getMeasures().get(0).notes.add(new Note(3, NoteLength.QUARTER, null));
+        // staffs.get(1).getMeasures().add(new Measure());
+        // staffs.get(1).getMeasures().get(1).transposition = 3;
+        // staffs.get(1).getMeasures().add(new Measure());
+        // staffs.get(1).getMeasures().add(new Measure());
+        staffVisualizer = new StaffVisualizer(this, 100, 100, WIDTH - 300, 800, staffs);
         elements.add(staffVisualizer);
         initUI();
-        
+
+        Player player = new Player(staffs);
+            //player.playFullSong(0);
+            player.saveFullSong(0);
         // try {
         //     //playScale();
-        //     playAltScale();
+        //     //playAltScale();
+            
         // } catch (InterruptedException e) {
         //     // TODO Auto-generated catch block
         //     e.printStackTrace();
@@ -125,13 +137,13 @@ public class Main extends PApplet {
     public void playAltScale() throws InterruptedException {
         Instrument instrument = new Instrument(new float[]{0.064f, 0.0213f, 0.0285f, 0.014f, 0.013f, 0.0025f, 0.003f, 0.0023f, 0.002f, 0.0018f, 0.0015f, 0.001f, 0.0005f});
 
-        instrument.cacheNotes(2, 12, 440);
+        instrument.cacheNotes(1, 12, 440);
 
         // TODO next play notes on a part, and add ability to stop the note of a part
         
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 2; i++) {
             instrument.startPlayingNote(0, i);
-            Thread.sleep(4000);
+            Thread.sleep(1500);
         }
     }
 

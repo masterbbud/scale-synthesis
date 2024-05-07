@@ -17,6 +17,8 @@ public class CurveLibrary {
     public static Curve ICON_REPEAT_END;
 
     public static Curve NOTES_WHOLE;
+    public static Curve NOTES_FILLED;
+    public static Curve NOTES_REST;
 
     public static Curve TEXT_3;
     
@@ -35,6 +37,8 @@ public class CurveLibrary {
         ICON_REPEAT_END = new Curve("icons/repeat");
 
         NOTES_WHOLE = new Curve("notes/whole");
+        NOTES_FILLED = new Curve("notes/filled");
+        NOTES_REST = new Curve("notes/rest");
 
         TEXT_3 = new Curve("text/3");
     }
@@ -42,21 +46,21 @@ public class CurveLibrary {
     public static Curve getNoteByLength(NoteLength length) {
         switch (length) {
             case SIXTEENTH:
-                return NOTES_WHOLE;
+                return NOTES_FILLED;
             case EIGHTH_TRIPLET:
-                return NOTES_WHOLE;
+                return NOTES_FILLED;
             case EIGHTH:
-                return NOTES_WHOLE;
+                return NOTES_FILLED;
             case QUARTER_TRIPLET:
-                return NOTES_WHOLE;
+                return NOTES_FILLED;
             case QUARTER:
-                return NOTES_WHOLE;
+                return NOTES_FILLED;
             case HALF:
                 return NOTES_WHOLE;
             case WHOLE:
                 return NOTES_WHOLE;
             default:
-                return NOTES_WHOLE;
+                return NOTES_FILLED;
         }
     }
 }

@@ -21,6 +21,7 @@ public class VisualSettings {
 
     // GENERAL SETTINGS
     public float notesPerOctave = 9.5f;
+    public float notesPerMeasure = 4;
 
     // UI SETTINGS
     public float scrollSpeed = 10f;

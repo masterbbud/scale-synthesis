@@ -1,5 +1,7 @@
 package com.parts;
 
+import java.util.Objects;
+
 import com.display.CurveLibrary;
 import com.display.VisualNote;
 import com.display.VisualSettings;
@@ -15,12 +17,14 @@ public class Note {
     private Part parentPart;
 
     public VisualNote visualNote;
+    public NoteDecoration noteDecoration;
 
     public Note(float pitch, NoteLength length, Part parentPart) {
         this.pitch = pitch;
         this.length = length;
         this.parentPart = parentPart;
         visualNote = new VisualNote(this);
+        noteDecoration = new NoteDecoration();
     }
 
     public float getVisualWidth() {
@@ -56,4 +60,6 @@ public class Note {
         g.noStroke();
         CurveLibrary.getNoteByLength(length).draw(g, x, y, VisualSettings.instance().noteScale);
     }
+
+    
 }

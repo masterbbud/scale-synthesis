@@ -2,6 +2,8 @@ package com.display;
 
 import java.util.ArrayList;
 
+import javax.print.attribute.standard.PageRanges;
+
 import com.Element;
 import com.Main;
 import com.enums.NoteLength;
@@ -16,7 +18,7 @@ import processing.core.PVector;
 public class StaffVisualizer extends Element {
     
     private final float scrollbarHeight = 20;
-    private final float measurePadding = 40;
+    private final float measurePadding = 80;
 
     private ArrayList<Part> parts;
     private float scrollX = 0;
@@ -41,6 +43,8 @@ public class StaffVisualizer extends Element {
         g.background(230);
 
         float paddingTop = 200f;
+
+        boolean drawUnfinishedMeasures = false;
 
         // draw all staffs
 
@@ -159,7 +163,9 @@ public class StaffVisualizer extends Element {
             tempCursor += VisualSettings.instance().measurePadding;
             for (int p = 0; p < parts.size(); p++) {
                 if (!measures[p].isComplete()) {
-                    tempCursor += VisualSettings.instance().unfinishedMeasurePadding;
+                    if (drawUnfinishedMeasures) {
+                        tempCursor += VisualSettings.instance().unfinishedMeasurePadding;
+                    }
                     break;
                 }
             }
@@ -180,7 +186,7 @@ public class StaffVisualizer extends Element {
                 drawEmptyStaffMeasure(g, xCursor, p * (measureHeight + measurePadding) + paddingTop, measureWidth, measureHeight, notesPerOctave, transposition);
             }
 
-            System.out.println("per measure");
+            //System.out.println("per measure");
 
             drawOneMeasure(g, notesPerOctave, measures, measure, xCursor, measureWidth);
 
@@ -214,13 +220,13 @@ public class StaffVisualizer extends Element {
                 positionInBeat += note.getCanonLength();
                 barredNotes.add(note);
 
-                float noteY = measureTop + measureHeight - ((note.pitch - measures[p].transposition + notesPerOctave) % notesPerOctave) * (measureHeight / notesPerOctave);
+                float noteY = measureTop + measureHeight - ((note.pitch - measures[p].transposition + notesPerOctave + notesPerOctave) % notesPerOctave) * (measureHeight / notesPerOctave);
                 note.visualNote.y = noteY;
 
-                if (positionInBeat >= 1 || n + 1 >= measures[p].notes.size() || note.length != measures[p].notes.get(n + 1).length) {
+                if (((positionInBeat >= 1 && note.length != NoteLength.QUARTER_TRIPLET) || (barredNotes.size() >= 3 && note.length == NoteLength.QUARTER_TRIPLET)) || n + 1 >= measures[p].notes.size() || note.length != measures[p].notes.get(n + 1).length) {
                     positionInBeat = positionInBeat % 1;
                     if (barredNotes.size() == 1) {
-                        if (note.length != NoteLength.WHOLE) {
+                        if (note.length != NoteLength.WHOLE && !note.noteDecoration.rest) {
                             drawFlag(g, note, note.visualNote.x, noteY, noteY > measureTop + measureHeight / 2);
                         }
                     }
@@ -230,7 +236,12 @@ public class StaffVisualizer extends Element {
                     barredNotes.clear();
                 }
                 
-                drawNote(g, note, note.visualNote.x, noteY);
+                if (note.noteDecoration.rest) {
+                    drawRest(g, note.visualNote.x, measureTop);
+                }
+                else {
+                    drawNote(g, note, note.visualNote.x, noteY);
+                }
 
                 float left = note.visualNote.x - VisualSettings.instance().noteScale / 2;
                 float right;
@@ -312,23 +323,33 @@ public class StaffVisualizer extends Element {
 
         float endY = notes.get(0).visualNote.y - upScalar * minStartY + slope * (notes.get(notes.size() - 1).visualNote.x - notes.get(0).visualNote.x);
         float xOffset = upScalar * VisualSettings.instance().noteScale * 0.45f;
-        g.quad(notes.get(0).visualNote.x + xOffset, notes.get(0).visualNote.y - upScalar * (minStartY - flagThickness), notes.get(0).visualNote.x + xOffset, notes.get(0).visualNote.y - upScalar * (minStartY), notes.get(notes.size() -1).visualNote.x + xOffset, endY, notes.get(notes.size() -1).visualNote.x + xOffset, endY + upScalar * flagThickness);
+        if (length != NoteLength.QUARTER_TRIPLET) {
+            g.quad(notes.get(0).visualNote.x + xOffset, notes.get(0).visualNote.y - upScalar * (minStartY - flagThickness), notes.get(0).visualNote.x + xOffset, notes.get(0).visualNote.y - upScalar * (minStartY), notes.get(notes.size() -1).visualNote.x + xOffset, endY, notes.get(notes.size() -1).visualNote.x + xOffset, endY + upScalar * flagThickness);
+        }
         if (length == NoteLength.SIXTEENTH) {
             g.quad(notes.get(0).visualNote.x + xOffset, notes.get(0).visualNote.y - upScalar * (minStartY - flagThickness * 3.5f), notes.get(0).visualNote.x + xOffset, notes.get(0).visualNote.y - upScalar * (minStartY - flagThickness * 2.5f), notes.get(notes.size() -1).visualNote.x + xOffset, endY + upScalar * flagThickness * 2.5f, notes.get(notes.size() -1).visualNote.x + xOffset, endY + upScalar * flagThickness * 3.5f);
         }
 
-        if (length == NoteLength.EIGHTH_TRIPLET) {
+        if (length == NoteLength.EIGHTH_TRIPLET || length == NoteLength.QUARTER_TRIPLET) {
             float textX = (notes.get(notes.size() - 1).visualNote.x - notes.get(0).visualNote.x)/2 + notes.get(0).visualNote.x;
             g.textAlign(PApplet.CENTER, PApplet.CENTER);
-            System.out.println(textX);
+            //System.out.println(textX);
             g.noStroke();
-            CurveLibrary.TEXT_3.draw(g, textX, notes.get(0).visualNote.y - upScalar * minStartY + slope * (textX - notes.get(0).visualNote.x) - upScalar * 12, 12);
+            CurveLibrary.TEXT_3.draw(g, textX, notes.get(0).visualNote.y - upScalar * minStartY + slope * (textX - notes.get(0).visualNote.x) - upScalar * 16, 12);
         }
 
         g.stroke(0);
         g.strokeWeight(3);
         for (Note n : notes) {
-            g.line(n.visualNote.x + xOffset, n.visualNote.y, n.visualNote.x + xOffset, notes.get(0).visualNote.y - upScalar * minStartY + slope * (n.visualNote.x - notes.get(0).visualNote.x));
+            if (n.noteDecoration.rest) {
+
+            }
+            else if (length == NoteLength.QUARTER_TRIPLET) {
+                g.line(n.visualNote.x + xOffset, n.visualNote.y, n.visualNote.x + xOffset, n.visualNote.y - upScalar * VisualSettings.instance().flagHeight);
+            }
+            else {
+                g.line(n.visualNote.x + xOffset, n.visualNote.y, n.visualNote.x + xOffset, notes.get(0).visualNote.y - upScalar * minStartY + slope * (n.visualNote.x - notes.get(0).visualNote.x));
+            }
         }
 
         // float startY = top + measureHeight - ((notes.get(0).pitch - transposition + notesPerOctave) % notesPerOctave) * (measureHeight / notesPerOctave);
@@ -398,6 +419,11 @@ public class StaffVisualizer extends Element {
 
     private void drawNote(PGraphics g, Note n, float x, float y) {
         n.draw(g, x, y);
+    }
+
+    private void drawRest(PGraphics g, float x, float top) {
+        g.noStroke();
+        CurveLibrary.NOTES_REST.draw(g, x, top + VisualSettings.instance().staffHeight / 2, 20);
     }
 
     private void drawTransposition(PGraphics g, float x, float y, int transposition, int transpositionOctave) {
